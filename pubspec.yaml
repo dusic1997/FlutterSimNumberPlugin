@@ -1,8 +1,7 @@
 name: simnumber
-description: A new flutter plugin project.
+description: A plugin for get SIM Details from Android Device.
 version: 0.0.1
-author: Harsh Mantri
-homepage: hjb
+homepage: https://github.com/harshmantri88/FlutterSimNumberPlugin
 
 environment:
   sdk: ">=2.16.2 <3.0.0"
