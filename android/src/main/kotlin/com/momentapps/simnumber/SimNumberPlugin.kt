@@ -114,13 +114,14 @@ class SimNumberPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, PluginRe
 
   private fun getSimData() {
     Log.e("SADASDASDASDASD","Hello DATA 1")
-    if (!hasPhonePermission()) {
-      Log.e("SADASDASDASDASD","Hello DATA 1.1")
-      requestPhonePermission()
-    } else {
-      Log.e("SADASDASDASDASD","Hello DATA 1.2")
-      generateMobileNumber()
-    }
+    generateMobileNumber()
+//    if (!hasPhonePermission()) {
+//      Log.e("SADASDASDASDASD","Hello DATA 1.1")
+//      requestPhonePermission()
+//    } else {
+//      Log.e("SADASDASDASDASD","Hello DATA 1.2")
+//      generateMobileNumber()
+//    }
   }
 
   private fun generateMobileNumber() {
