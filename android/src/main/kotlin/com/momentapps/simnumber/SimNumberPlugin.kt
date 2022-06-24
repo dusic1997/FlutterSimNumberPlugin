@@ -50,7 +50,7 @@ class SimNumberPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, PluginRe
     )
   }
 
-  private fun onAttachedToEngine(
+  fun onAttachedToEngine(
     applicationContext: Context,
     messenger: BinaryMessenger,
     _activity: Activity?
