@@ -1,5 +1,6 @@
 package com.momentapps.simnumber
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
@@ -99,29 +100,19 @@ class SimNumberPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, PluginRe
   }
 
   private fun requestPhonePermission() {
-     if (!ActivityCompat.shouldShowRequestPermissionRationale(
-        activity!!,
-        "android.permission.READ_PHONE_STATE"
-      )
-    ) {
-      ActivityCompat.requestPermissions(
-        activity!!,
-        arrayOf("android.permission.READ_PHONE_STATE"),
-        REQUEST_READ_PHONE_STATE
-      )
-    }
+    val perm = arrayOf(Manifest.permission.READ_PHONE_STATE)
+    ActivityCompat.requestPermissions(activity!!, perm, REQUEST_READ_PHONE_STATE)
   }
 
   private fun getSimData() {
     Log.e("SADASDASDASDASD","Hello DATA 1")
-    generateMobileNumber()
-//    if (!hasPhonePermission()) {
-//      Log.e("SADASDASDASDASD","Hello DATA 1.1")
-//      requestPhonePermission()
-//    } else {
-//      Log.e("SADASDASDASDASD","Hello DATA 1.2")
-//      generateMobileNumber()
-//    }
+    if (!hasPhonePermission()) {
+      Log.e("SADASDASDASDASD","Hello DATA 1.1")
+      requestPhonePermission()
+    } else {
+      Log.e("SADASDASDASDASD","Hello DATA 1.2")
+      generateMobileNumber()
+    }
   }
 
   private fun generateMobileNumber() {
