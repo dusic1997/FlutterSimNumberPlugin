@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
 import android.telephony.SubscriptionInfo
 import android.telephony.SubscriptionManager
@@ -39,7 +40,7 @@ class SimNumberPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, PluginRe
   companion object {
     fun registerWith(registrar: PluginRegistry.Registrar) {
       val instance = SimNumberPlugin()
-      instance.onAttachedToEngine(registrar.context(), registrar.messenger(), registrar.activity())
+      instance.onAttachedToEngine(registrar.context(), registrar.messenger())
     }
   }
 
@@ -47,14 +48,13 @@ class SimNumberPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, PluginRe
     this.onAttachedToEngine(
       flutterPluginBinding.applicationContext,
       flutterPluginBinding.binaryMessenger,
-      null
+
     )
   }
 
   fun onAttachedToEngine(
     applicationContext: Context,
     messenger: BinaryMessenger,
-    _activity: Activity?
   ) {
     this.applicationContext = applicationContext
     MethodChannel(messenger, "sim_number").also { methodChannel = it }
@@ -68,7 +68,11 @@ class SimNumberPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, PluginRe
       } as EventChannel.StreamHandler)
   }
 
-  override fun onDetachedFromEngine(flutterPluginBinding: FlutterPluginBinding) {}
+  override fun onDetachedFromEngine(flutterPluginBinding: FlutterPluginBinding) {
+    methodChannel?.setMethodCallHandler(null);
+    methodChannel = null;
+    this.applicationContext = null;
+  }
 
 
   @SuppressLint("WrongConstant")
@@ -93,13 +97,12 @@ class SimNumberPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, PluginRe
   }
 
   private fun hasPhonePermission(): Boolean {
-    return  ContextCompat.checkSelfPermission(
-      activity!!,
-      "android.permission.READ_PHONE_STATE"
-    ) == 0
+      return PackageManager.PERMISSION_GRANTED == ContextCompat
+      .checkSelfPermission(applicationContext!!, Manifest.permission.READ_PHONE_STATE);
   }
 
   private fun requestPhonePermission() {
+    Log.e("SADASDASDASDASD","Hello DATA 5.1 ; "+(activity==null).toString())
     val perm = arrayOf(Manifest.permission.READ_PHONE_STATE)
     ActivityCompat.requestPermissions(activity!!, perm, REQUEST_READ_PHONE_STATE)
   }
@@ -194,18 +197,22 @@ class SimNumberPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, PluginRe
   }
 
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+    Log.e("SADASDASDASDASD","Hello DATA 6.1 ;")
     activity = binding.activity
   }
 
   override fun onDetachedFromActivityForConfigChanges() {
+    Log.e("SADASDASDASDASD","Hello DATA 6.2 ;")
     activity = null
   }
 
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+    Log.e("SADASDASDASDASD","Hello DATA 6.3 ;")
     activity = binding.activity
   }
 
   override fun onDetachedFromActivity() {
+    Log.e("SADASDASDASDASD","Hello DATA 6.4 ;")
     activity = null
   }
 }
