@@ -20,9 +20,6 @@ import io.flutter.plugin.common.*
 import io.flutter.plugin.common.EventChannel.EventSink
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.plugin.common.PluginRegistry;
-import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.BinaryMessenger;
 import org.json.JSONArray
 
 
@@ -95,31 +92,14 @@ class SimNumberPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, PluginRe
   }
 
   private fun hasPhonePermission(): Boolean {
-    return if (Build.VERSION.SDK_INT > 29) {
-      ContextCompat.checkSelfPermission(
-        applicationContext!!,
-        "android.permission.READ_PHONE_NUMBERS"
-      ) == 0
-    } else ContextCompat.checkSelfPermission(
+    return  ContextCompat.checkSelfPermission(
       applicationContext!!,
       "android.permission.READ_PHONE_STATE"
     ) == 0
   }
 
   private fun requestPhonePermission() {
-    if (Build.VERSION.SDK_INT > 29) {
-      if (!ActivityCompat.shouldShowRequestPermissionRationale(
-          activity!!,
-          "android.permission.READ_PHONE_NUMBERS",
-        )
-      ) {
-        ActivityCompat.requestPermissions(
-          activity!!,
-          arrayOf("android.permission.READ_PHONE_NUMBERS"),
-          REQUEST_READ_PHONE_STATE
-        )
-      }
-    } else if (!ActivityCompat.shouldShowRequestPermissionRationale(
+     if (!ActivityCompat.shouldShowRequestPermissionRationale(
         activity!!,
         "android.permission.READ_PHONE_STATE"
       )
@@ -178,18 +158,8 @@ class SimNumberPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, PluginRe
   @SuppressLint("WrongConstant")
   @RequiresApi(api = 22)
   fun getSubscriptions(): List<SubscriptionInfo> {
-    val subscriptionManager =
-      activity!!.getSystemService("telephony_subscription_service") as SubscriptionManager
-    if (ActivityCompat.checkSelfPermission(
-        (activity as Context?)!!,
-        "android.permission.READ_PHONE_NUMBERS"
-      ) == -1 && ActivityCompat.checkSelfPermission(
-        (activity as Context?)!!, "android.permission.READ_PHONE_STATE"
-      ) == -1
-    ) {
-      Log.e("UNAVAILABLE", "No phone number on sim card Permission Denied#1", null as Throwable?)
-      return ArrayList()
-    }
+    val subscriptionManager = applicationContext
+      ?.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
     return subscriptionManager.activeSubscriptionInfoList as List<SubscriptionInfo>
   }
 

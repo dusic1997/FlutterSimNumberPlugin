@@ -1,6 +1,6 @@
 name: simnumber
 description: A plugin for get SIM Details from Android Device.
-version: 0.0.1
+version: 0.0.6
 homepage: https://github.com/harshmantri88/FlutterSimNumberPlugin
 
 environment:
