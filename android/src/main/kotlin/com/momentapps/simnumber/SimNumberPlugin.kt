@@ -93,7 +93,7 @@ class SimNumberPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, PluginRe
 
   private fun hasPhonePermission(): Boolean {
     return  ContextCompat.checkSelfPermission(
-      applicationContext!!,
+      activity!!,
       "android.permission.READ_PHONE_STATE"
     ) == 0
   }
@@ -113,39 +113,44 @@ class SimNumberPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, PluginRe
   }
 
   private fun getSimData() {
+    Log.e("SADASDASDASDASD","Hello DATA 1")
     if (!hasPhonePermission()) {
+      Log.e("SADASDASDASDASD","Hello DATA 1.1")
       requestPhonePermission()
     } else {
+      Log.e("SADASDASDASDASD","Hello DATA 1.2")
       generateMobileNumber()
     }
   }
 
   private fun generateMobileNumber() {
     val simJsonArray = JSONArray()
+    Log.e("SADASDASDASDASD","Hello DATA 2")
     if (Build.VERSION.SDK_INT >= 22) {
       for (subscriptionInfo in getSubscriptions()) {
+        Log.e("SADASDASDASDASD","Hello DATA 2.1")
         val simCard = SimInfo(telephonyManager!!, subscriptionInfo)
         simJsonArray.put(simCard.toJSON() as Any)
       }
     }
     if (simJsonArray.length() == 0) {
+      Log.e("SADASDASDASDASD","Hello DATA 2.3")
       val simCard2: SimInfo? = getSingleSimCard()
       if (simCard2 != null) {
         simJsonArray.put(simCard2.toJSON() as Any)
       }
     }
     if (simJsonArray.toString().isEmpty()) {
+      Log.e("SADASDASDASDASD","Hello DATA 2.4")
       result!!.error("UNAVAILABLE", "No phone number on sim card", null as Any?)
     } else {
+      Log.e("SADASDASDASDASD","Hello DATA 2.5")
       result!!.success(simJsonArray.toString() as Any)
     }
   }
 
   private fun getSingleSimCard(): SimInfo? {
     if (ActivityCompat.checkSelfPermission(
-        (activity as Context?)!!,
-        "android.permission.READ_PHONE_NUMBERS"
-      ) == -1 && ActivityCompat.checkSelfPermission(
         (activity as Context?)!!, "android.permission.READ_PHONE_STATE"
       ) == -1
     ) {
@@ -201,11 +206,14 @@ class SimNumberPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, PluginRe
   }
 
   override fun onDetachedFromActivityForConfigChanges() {
+    activity = null
   }
 
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+    activity = binding.activity
   }
 
   override fun onDetachedFromActivity() {
+    activity = null
   }
 }
