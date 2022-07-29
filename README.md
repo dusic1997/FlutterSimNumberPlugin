@@ -1,15 +1,38 @@
-# simnumber
+# SimNumber plugin for Flutter
 
-A new flutter plugin project.
+A Flutter plugin to retrieve Sim cards data - dual sim support.
 
-## Getting Started
+Note: It works for Android only because getting mobile number of sim card is not supported in iOS.
+Note: If the mobile number is not pre-exist on sim card it will return sim slot index and operator name.
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+## Installation
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Add `simnumber` as a dependency in your pubspec.yaml.
 
+Make sure that your `AndroidManifext.xml` file includes the following permission:
+```xml
+<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+<uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+```
+
+### Usage
+
+Before you use this plugin, you must make sure that the user has authorized access to his phone, for example with the [permission_handler plugin](https://pub.dev/packages/permission_handler).
+
+You may then use the plugin:
+``` dart
+import 'package:simnumber/sim_number.dart';
+
+void printSimCardsData() async {
+  try {
+    SimInfo simInfo = await SimNumber.getSimData();
+    for (var s in simData.cards) {
+      print('Serial number: ${s.serialNumber}');
+    }
+  } on Exception catch (e) {
+    debugPrint("error! code: ${e.code} - message: ${e.message}");
+  }
+}
+
+void main() => printSimCardsData();
+```
