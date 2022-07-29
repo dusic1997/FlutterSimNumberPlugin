@@ -26,8 +26,8 @@ import 'package:simnumber/sim_number.dart';
 void printSimCardsData() async {
   try {
     SimInfo simInfo = await SimNumber.getSimData();
-    for (var s in simData.cards) {
-      print('Serial number: ${s.serialNumber}');
+    for (var s in simInfo.cards) {
+      print('Serial number: ${s.slotIndex} ${s.phoneNumber}');
     }
   } on Exception catch (e) {
     debugPrint("error! code: ${e.code} - message: ${e.message}");
