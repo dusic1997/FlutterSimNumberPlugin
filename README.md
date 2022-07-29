@@ -3,6 +3,7 @@
 A Flutter plugin to retrieve Sim cards data - dual sim support.
 
 Note: It works for Android only because getting mobile number of sim card is not supported in iOS.
+
 Note: If the mobile number is not pre-exist on sim card it will return sim slot index and operator name.
 
 ## Installation
