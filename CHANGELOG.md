@@ -1,3 +1,3 @@
-## 0.0.11
+## 0.0.12
 
-* Get SIM Details from Android Device
+* Get SIM Details for Android Device 

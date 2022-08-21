@@ -80,7 +80,6 @@ class SimNumberPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, PluginRe
     this.result = result
     when (call.method) {
       "getSimData" -> {
-        Log.e("SADASDASDASDASD","Hello DATA")
         telephonyManager = applicationContext?.getSystemService("phone") as TelephonyManager
         this.getSimData()
       }
@@ -102,44 +101,35 @@ class SimNumberPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, PluginRe
   }
 
   private fun requestPhonePermission() {
-    Log.e("SADASDASDASDASD","Hello DATA 5.1 ; "+(activity==null).toString())
     val perm = arrayOf(Manifest.permission.READ_PHONE_STATE)
     ActivityCompat.requestPermissions(activity!!, perm, REQUEST_READ_PHONE_STATE)
   }
 
   private fun getSimData() {
-    Log.e("SADASDASDASDASD","Hello DATA 1")
     if (!hasPhonePermission()) {
-      Log.e("SADASDASDASDASD","Hello DATA 1.1")
       requestPhonePermission()
     } else {
-      Log.e("SADASDASDASDASD","Hello DATA 1.2")
       generateMobileNumber()
     }
   }
 
   private fun generateMobileNumber() {
     val simJsonArray = JSONArray()
-    Log.e("SADASDASDASDASD","Hello DATA 2")
     if (Build.VERSION.SDK_INT >= 22) {
       for (subscriptionInfo in getSubscriptions()) {
-        Log.e("SADASDASDASDASD","Hello DATA 2.1")
         val simCard = SimInfo(telephonyManager!!, subscriptionInfo)
         simJsonArray.put(simCard.toJSON() as Any)
       }
     }
     if (simJsonArray.length() == 0) {
-      Log.e("SADASDASDASDASD","Hello DATA 2.3")
       val simCard2: SimInfo? = getSingleSimCard()
       if (simCard2 != null) {
         simJsonArray.put(simCard2.toJSON() as Any)
       }
     }
     if (simJsonArray.toString().isEmpty()) {
-      Log.e("SADASDASDASDASD","Hello DATA 2.4")
       result!!.error("UNAVAILABLE", "No phone number on sim card", null as Any?)
     } else {
-      Log.e("SADASDASDASDASD","Hello DATA 2.5")
       result!!.success(simJsonArray.toString() as Any)
     }
   }
@@ -169,26 +159,20 @@ class SimNumberPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, PluginRe
     grantResults: IntArray
   ): Boolean {
 
-    Log.e("SADASDASDASDASD","onRequestPermissionsResult 1")
 
     if (requestCode == REQUEST_READ_PHONE_STATE) {
-      Log.e("SADASDASDASDASD","onRequestPermissionsResult 2")
 
       if (grantResults.isNotEmpty() && grantResults[0] == 0) {
-        Log.e("SADASDASDASDASD","onRequestPermissionsResult 3")
 
         if (permissionEvent != null) {
-          Log.e("SADASDASDASDASD","onRequestPermissionsResult 4")
 
           permissionEvent!!.success(true as Any)
         }
-        Log.e("SADASDASDASDASD","onRequestPermissionsResult 5")
 
         generateMobileNumber()
         return true
       }
       if (permissionEvent != null) {
-        Log.e("SADASDASDASDASD","onRequestPermissionsResult 6")
         permissionEvent!!.success(false as Any)
       }
     }
@@ -197,22 +181,18 @@ class SimNumberPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, PluginRe
   }
 
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-    Log.e("SADASDASDASDASD","Hello DATA 6.1 ;")
     activity = binding.activity
   }
 
   override fun onDetachedFromActivityForConfigChanges() {
-    Log.e("SADASDASDASDASD","Hello DATA 6.2 ;")
     activity = null
   }
 
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-    Log.e("SADASDASDASDASD","Hello DATA 6.3 ;")
     activity = binding.activity
   }
 
   override fun onDetachedFromActivity() {
-    Log.e("SADASDASDASDASD","Hello DATA 6.4 ;")
     activity = null
   }
 }
