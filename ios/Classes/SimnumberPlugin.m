@@ -1,4 +1,4 @@
-#import "SimnumberPlugin.h"
+#import "SimNumberPlugin.h"
 #if __has_include(<simnumber/simnumber-Swift.h>)
 #import <simnumber/simnumber-Swift.h>
 #else
@@ -8,8 +8,8 @@
 #import "simnumber-Swift.h"
 #endif
 
-@implementation SimnumberPlugin
+@implementation SimNumberPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  [SwiftSimnumberPlugin registerWithRegistrar:registrar];
+  [SwiftSimNumberPlugin registerWithRegistrar:registrar];
 }
 @end
