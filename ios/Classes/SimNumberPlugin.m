@@ -10,6 +10,6 @@
 
 @implementation SimNumberPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  [SwiftSimNumberPlugin registerWithRegistrar:registrar];
+  [SwiftSimnumberPlugin registerWithRegistrar:registrar];
 }
 @end
